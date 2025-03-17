@@ -1,6 +1,6 @@
 import unittest
 
-from block_markdown import BlockType, block_to_block_type, markdown_to_blocks, markdown_to_html_node
+from block_markdown import BlockType, block_to_block_type, extract_title, markdown_to_blocks, markdown_to_html_node
 
 
 class TestBlockMarkdown(unittest.TestCase):
@@ -163,7 +163,7 @@ this is paragraph text
             html,
             "<div><ul><li>This is a list</li><li>with items</li><li>and <i>more</i> items</li></ul><ol><li>This is an <code>ordered</code> list</li><li>with items</li><li>and more items</li></ol></div>",
         )
-        
+
     def test_headings(self):
         md = """
 # this is an h1
@@ -180,6 +180,21 @@ this is paragraph text
             "<div><h1>this is an h1</h1><p>this is paragraph text</p><h2>this is an h2</h2></div>",
         )
 
+    def test_extract_title(self):
+        md = "# Hello World"
+        md1 = "#Hello World"
+        md2 = "#   Hellow World!   "
+        heading = extract_title(md)
+        self.assertEqual(
+            heading,
+            "Hello World"
+        )
+        heading = extract_title(md2)
+        self.assertEqual(
+            heading,
+            "Hellow World!"
+        )
+        # self.assertRaises(Exception, extract_title(md1))
 
 if __name__ == "__main__":
     unittest.main()

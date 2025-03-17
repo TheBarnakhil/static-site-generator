@@ -91,3 +91,13 @@ def create_html_node(block_type: BlockType, block: str):
 
 def text_to_children(str):
     return list(map(lambda x : text_node_to_html_node(x), text_to_textnodes(str.strip())))
+
+
+def extract_title(markdown: str):
+    header = markdown.split("\n")[0].replace("# ", "").strip()
+    if header.count("#") != 0:
+        raise Exception("No title ( h1 )")
+    return header
+
+# def extract_content(markdown: str):
+#     return "\n\n".join(markdown.split("\n\n")[1:])
