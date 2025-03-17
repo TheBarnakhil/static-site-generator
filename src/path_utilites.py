@@ -20,7 +20,7 @@ def copy_contents(src, dest):
     else:
         raise Exception("Not a valid path")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath ):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     from_content = ""
     template_content = ""
@@ -32,9 +32,7 @@ def generate_page(from_path, template_path, dest_path):
     extracted_html = markdown_to_html_node(from_content).to_html()
     extracted_title = extract_title(from_content)
 
-    print(from_path, dest_path, "PATHS")
-
-    template_content = template_content.replace("{{ Title }}", extracted_title).replace("{{ Content }}", extracted_html)
+    template_content = template_content.replace("{{ Title }}", extracted_title).replace("{{ Content }}", extracted_html).replace('href="/', f'href="/{basepath}').replace('src="/', f'src="/{basepath}')
 
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
@@ -42,13 +40,12 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, "w") as file:
         file.write(template_content)
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
-    print(dir_path_content, template_path, dest_dir_path, "PATHS1A2")
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath ):
     if os.path.exists(dir_path_content):
         for item in os.listdir(dir_path_content):
             item_src = os.path.join(dir_path_content, item)
             item_dest = os.path.join(dest_dir_path, item).replace(".md", ".html")
             if os.path.isdir(item_src):
-                generate_pages_recursive(item_src,template_path, item_dest)
+                generate_pages_recursive(item_src,template_path, item_dest, basepath)
             else:
-                generate_page(item_src, template_path, item_dest)
+                generate_page(item_src, template_path, item_dest,basepath)
