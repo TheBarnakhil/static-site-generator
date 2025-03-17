@@ -56,7 +56,7 @@ def split_nodes_image_or_link(old_nodes : List[TextNode], text_type : TextType):
     return new_nodes
 
 
-def text_to_textnodes(text):
+def text_to_textnodes(text) -> List[TextNode]:
     node = TextNode(text,TextType.TEXT)
     new_nodes_list = []
     new_nodes_list = split_nodes_delimiter([node], TextTypeDelimiter.BOLD.value, TextType.BOLD)
