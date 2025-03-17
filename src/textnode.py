@@ -4,12 +4,17 @@ from htmlnode import LeafNode
 
 class TextType(Enum):
     TEXT = "text"
-    NORMAL= "normal"
     BOLD = "bold"
     ITALIC = "italic"
     CODE = "code"
     LINK = "link"
     IMAGE = "image"
+
+class TextTypeDelimiter(Enum):
+    TEXT = None
+    BOLD = "**"
+    ITALIC = "_"
+    CODE = "`"
 
 class TextNode:
     def __init__(self, text, text_type : TextType, url = None):
@@ -21,7 +26,7 @@ class TextNode:
         return self.text_type == value.text_type
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+        return f"TextNode({self.text}, {self.text_type}, {self.url})"
     
     
 def text_node_to_html_node(text_node) -> str:
